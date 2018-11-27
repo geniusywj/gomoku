@@ -1,0 +1,2 @@
+# gomoku
+for gomoku competition
