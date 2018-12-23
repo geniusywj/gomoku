@@ -1,4 +1,5 @@
 import copy
+import board_evaluation
 
 
 class SearchAgent:
@@ -6,9 +7,10 @@ class SearchAgent:
     NEGATIVE_INFINITY = 'NEGATIVE_INFINITY'
     POSITIVE_INFINITY = 'POSITIVE_INFINITY'
 
-    def __init__(self, board, player, depth):
+    def __init__(self, board, player, opponent, depth):
         self.depth = depth
         self.player = player
+        self.opponent = opponent
         self.board = board
 
     def update_board(self, board):
@@ -42,7 +44,7 @@ class SearchAgent:
                     return v
                 beta = v if beta == self.POSITIVE_INFINITY else min(beta, v)
             return v
-        
+
         return max_value(self.board, self.NEGATIVE_INFINITY, self.POSITIVE_INFINITY, 0)
 
     def get_legal_action(self, board):
@@ -57,7 +59,7 @@ class SearchAgent:
         return 0
 
     def is_win(self, board):
-        return True
+        return board_evaluation.count_continuous_x(board, self.player, 5)
 
     def is_lose(self, board):
-        return True
+        return board_evaluation.count_continuous_x(board, self.opponent, 5)
