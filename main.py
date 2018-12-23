@@ -14,7 +14,7 @@ OTHER = 2
 
 
 class AI:
-    boardSize = BOARD_SIZE;
+    boardSize = BOARD_SIZE
 
     # TODO: add your own attributes here if you need any
 
@@ -25,10 +25,10 @@ class AI:
             self.board.append([])
             for j in range(0, BOARD_SIZE):
                 self.board[i].append(EMPTY)
-        # TODO: add your own contructing procedure here if necessary
+        # TODO: add your own constructing procedure here if necessary
 
     def init(self):
-        # TODO: add your own initilization here if you need any
+        # TODO: add your own initialization here if you need any
         1 == 1
 
     def begin(self):
