@@ -17,6 +17,7 @@ class AI:
     boardSize = BOARD_SIZE
 
     # TODO: add your own attributes here if you need any
+    from search_agent import SearchAgent
 
     # Constructor
     def __init__(self):
@@ -29,27 +30,22 @@ class AI:
 
     def init(self):
         # TODO: add your own initialization here if you need any
-        1 == 1
+        self.gomoku_agent = self.SearchAgent(self.board, ME, OTHER)
 
     def begin(self):
         # TODO: write your own opening here
         # NOTE: this method is only called when it's your turn to begin (先手)
         # RETURN: two integer represent the axis of target position
         # The following one is a very naive sample which always put chess at the first empty slot.
-        for i in range(0, BOARD_SIZE):
-            for j in range(0, BOARD_SIZE):
-                if self.board[i][j] == EMPTY:
-                    return i, j
+        return self.boardSize // 2, self.boardSize // 2
 
     def turn(self):
         # TODO: write your in-turn operation here
         # NOTE: this method is called when it's your turn to put chess
         # RETURN: two integer represent the axis of target position
         # The following one is a very naive sample which always put chess at the first empty slot.
-        for i in range(0, BOARD_SIZE):
-            for j in range(0, BOARD_SIZE):
-                if self.board[i][j] == EMPTY:
-                    return i, j
+        self.gomoku_agent.update_board(self.board)
+        return self.gomoku_agent.get_action()
 
     @classmethod
     # NOTE: don't change this function
