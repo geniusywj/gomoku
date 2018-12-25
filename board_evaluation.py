@@ -1,31 +1,32 @@
 from itertools import product
 
+BORDER = -1
+EMPTY = 0
+ME = 1
+OPPONENT = 2
+WHATEVER = 3
 
-# four is not counted as three
-def count_continuous_x(board, player, x):
-    board_size = len(board)
-    offsets = ((0, 1), (1, 1), (1, 0), (1, -1))
+
+def count_pattern(board_without_border, pattern):
     count = 0
-    for i, j in product(range(board_size), range(board_size)):
-        if board[i][j] == player:
+
+    # add border to the board
+    board_size = len(board_without_border) + 2
+    board = list()
+    board.append([BORDER] * board_size)
+    for row in board_without_border:
+        board.append([BORDER] + row.copy() + [BORDER])
+    board.append([BORDER] * board_size)
+
+    offsets = list(product((-1, 0, 1), (-1, 0, 1)))
+    offsets.remove((0, 0))
+    for i, j in product(range(board_size), repeat=2):
+        if board[i][j] == pattern[0] or pattern[0] == WHATEVER:
             for offset in offsets:
-                if not out_of_bound(board, i - offset[0], j - offset[1]) and \
-                        board[i - offset[0]][j - offset[1]] == player:
+                try:
+                    count += all(board[i + offset[0] * x][j + offset[1] * x] == p or p == WHATEVER for x, p in
+                                 enumerate(pattern))
+                except IndexError:
                     continue
-                legal = True
-                for x_ in range(1, x):
-                    i_ = i + offset[0] * x_
-                    j_ = j + offset[1] * x_
-                    if out_of_bound(board, i_, j_):
-                        legal = False
-                        break
-                    legal = legal and board[i_][j_] == player
-                if not out_of_bound(board, i + offset[0] * x, j + offset[1] * x) and \
-                        board[i + offset[0] * x][j + offset[1] * x] == player:
-                    legal = False
-                count += legal
-    return count
 
-
-def out_of_bound(board, i, j):
-    return i >= len(board) or j >= len(board) or i < 0 or j < 0
+    return count // 2 if pattern == pattern[::-1] else count
